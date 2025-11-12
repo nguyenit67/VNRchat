@@ -1,0 +1,23 @@
+[project]
+name = "vnrchat"
+version = "0.1.0"
+description = "Streamlit chat app for querying local Vietnamese history documents with inline references."
+authors = [{ name = "VNRchat User" }]
+requires-python = ">=3.9"
+dependencies = [
+    "streamlit==1.39.0",
+    "scikit-learn==1.5.2",
+    "PyPDF2==3.0.1",
+    "docx2txt==0.8",
+]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["app.py"]
+py-modules = ["app"]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = true
