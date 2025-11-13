@@ -20,7 +20,7 @@ EMBEDDING_MODEL = "models/text-embedding-004"
 CHAT_MODEL = "models/gemini-2.5-flash"
 CHUNK_SIZE = 1200
 CHUNK_OVERLAP = 200
-RETRIEVER_K = 5
+RETRIEVER_K = 10
 
 load_dotenv()
 
@@ -45,7 +45,7 @@ def sanitize_text(text: str) -> str:
 
 
 def ensure_api_key() -> str:
-    api_key = os.getenv("GOOGLE_API_KEY")
+    api_key = st.secrets["GOOGLE_API_KEY"] if "GOOGLE_API_KEY" in st.secrets else os.getenv("GOOGLE_API_KEY")
     if not api_key:
         raise RuntimeError("Chưa tìm thấy GOOGLE_API_KEY. Thiết lập biến môi trường trước khi chạy ứng dụng.")
     return api_key
@@ -184,7 +184,7 @@ def render_sidebar(chunks: Sequence[Document]) -> None:
     counts = Counter(doc.metadata.get("source", "unknown") for doc in chunks)
     for name, count in counts.items():
         st.sidebar.markdown(f"- {name}")
-    # st.sidebar.caption("Đoạn được tách bằng RecursiveCharacterTextSplitter để giữ ngữ cảnh.")
+    st.sidebar.caption(f"Trích dẫn {RETRIEVER_K} đoạn tài liệu gần nhất cho mỗi câu hỏi.")
 
 
 def main():
